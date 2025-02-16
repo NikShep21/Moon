@@ -1,44 +1,16 @@
-#include <fstream>
 #include "file.h"
+#include <string.h>
+#include <fstream>
 #include <iostream>
-#include <sstream>
-using namespace std;
-bool isValidDateFormat(){
-    return true;
-}
-int getDate(const string& date, MoonData& data){
-    if(isValidDateFormat() == false){
-        return -1;
-    }
-    string day = date.substr(0,2);
-    string month = date.substr(3,2);
-    string year = date.substr(6,4);
-    string ymd = year + month + day;
-    string fileName = "moon" + year;
-    ifstream file("../moon/"+fileName);
+MoonData getDataFile(const char* year, const char* month, const char* day){
+    MoonData data;
+    char path[24] = "../../Moon/moonYYYY.dat";
+    strncpy(path + 14, year, 4);
 
-    if(!file.is_open()){
-        return -1;
+    std::ifstream file(path);
+    if (!file.is_open()) {
+        std::cerr << "Не удалось открыть файл: " << path << std::endl;
+        return data;
     }
-    string line;
-    int count = 0;
-    while (getline(file, line)) {
-        if (line.substr(0, 8) == ymd) {
-            count++;
-        }
-    }
-    data = new MoonData[count];
-    file.clear();
-    file.seekg(0, ios::beg);
-    int index = 0;
-    while (getline(file, line)) {
-        if (line.substr(0, 8) == ymd) {
-            stringstream ss(line);
-            ss >> data[index].YMD >> data[index].HMS >> data[index].T >> data[index].R >> data[index].El >> data[index].Az >> data[index].FI >> data[index].LG;
-            index++;
-        }
-    }
-
-    file.close();
-
+    return data;
 }

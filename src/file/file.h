@@ -1,10 +1,10 @@
-#include <string>
+
 #ifndef FILE_H
 #define FILE_H
 using namespace std;
 struct MoonData {
-    string YMD;
-    string HMS;
+    char YMD[9];
+    char HMS[7];
     double T;
     double R;
     double El;
@@ -12,7 +12,8 @@ struct MoonData {
     double FI;
     double LG;
 };
-void getDate(const string& date);
+MoonData getDataFile(const char* year, const char* month, const char* day);
+
 
 #endif
  
